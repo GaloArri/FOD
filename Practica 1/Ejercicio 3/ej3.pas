@@ -106,71 +106,6 @@ begin
     close (a);
 end;
 
-procedure modificarEdad (var a:archivo; n:integer);
-var
-    aux:empleado;
-    i:integer;
-    edad:integer;
-begin
-    i:=0;
-    reset (a);
-    repeat
-        read (a,aux);
-        i:=i+1;
-    until (aux.nEmpleado=n) or (eof(a));
-    if (aux.nEmpleado=n)then begin
-        write ('Ingrese la edad nueva');
-        readln (edad);
-        aux.edad:=edad;
-        Seek (a,FilePos(a)-1);
-        write (a,aux);
-    end
-    else begin
-        writeln ('No se encontro');
-    end;
-    close(a);
-end;
-procedure exportarTxt(var a:archivo);
-var
-    txt: Text;
-    emp:empleado;
-begin
-    assign(txt, 'todos_empleados.txt');
-    rewrite(txt);
-    reset(a);
-    while not eof(a)do 
-        begin
-            read(a,emp);
-            with emp do
-                writeln(txt,' ',nempleado,' ',nombre,' ', apellido,' ',dni,' ',edad);
-        end;
-    writeln('Exportado');
-    close(a); 
-    close(txt);
-end;
-
-procedure exportar_Emp_sin_dni(var a:archivo);
-var
-    txt: Text;
-    emp:empleado;
-begin
-    assign(txt, 'faltaDNIEmpleado.txt');
-    rewrite(txt);
-    reset(a);
-    while(not eof(a)) do 
-        begin
-            read(a,emp);
-            if(emp.dni = 00)then
-                begin
-                    with emp do
-                        writeln(txt,' ',nempleado,' ',nombre,' ', apellido,' ',dni,' ',edad);
-                end;
-        end;
-    writeln('Exportado');
-    close(a); 
-    close(txt);
-end;
-
 
 procedure menu (var a:archivo);
 var
@@ -182,9 +117,6 @@ begin
     writeln ('b: Listar empleados de cierto nombre o apellido');
     writeln ('c: Listar todos los empleados');
     writeln ('d: Listar empleados proximos a jubilarse');
-    writeln ('e: Modificar edad a uno o mas empleados');
-    writeln ('f: Exportar como .txt');
-    writeln ('g: Exportar a un archivo de texto llamado: “faltaDNIEmpleado.txt”');
     writeln ('z: Finalizar');
     readln (aux);
     while (aux<>'z')do begin
@@ -193,12 +125,6 @@ begin
             'b': porNombre(a);
             'c': listaEmp(a);
             'd': mayores70(a);
-            'e': begin
-                    write ('Ingrese el numero de empleado a modificar edad: ');
-                    readln (n);
-                    modificarEdad(a,n);
-                end;
-            'f':exportarTxt(a);
             'g':
         end;
         writeln ('|******************************************************|');
@@ -206,9 +132,6 @@ begin
         writeln ('b: Listar empleados de cierto nombre o apellido');
         writeln ('c: Listar todos los empleados');
         writeln ('d: Listar empleados proximos a jubilarse');
-        writeln ('e: Modificar edad a uno o mas empleados');
-        writeln ('f: Exportar como .txt');
-        writeln ('g: Exportar a un archivo de texto llamado: “faltaDNIEmpleado.txt”');
         writeln ('z: Finalizar');
         readln (aux);
     end;
