@@ -36,7 +36,6 @@ begin
     end;
     seRepite:=false;
 end;
-
 procedure cargar (var a:archivo);
 var
     e:empleado;
